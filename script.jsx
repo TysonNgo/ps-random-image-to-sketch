@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file
  * This is a script that grabs a random image from
  * some website (picsum.photos was used), displays it
@@ -16,6 +16,7 @@
  * This class gets a random image from some website and opens it
  * @constructor
  */
+
 var RandomImage = function(filename){
     // can't seem to use default params
     if (!filename) {
@@ -85,7 +86,13 @@ function countdown(document){
 
     var drawHere = document.artLayers.add();
     drawHere.name = "draw";
-    document.artLayers.getByName("Background").visible = false;
+    // document.artLayers.getByName("Background").visible = false;
+    
+    var white = new SolidColor();
+    white.rgb.hexValue = "FFFFFF";
+    app.activeDocument.selection.selectAll();
+    app.activeDocument.selection.fill(white);
+    app.activeDocument.selection.deselect();   
 }
 
 app.preferences.rulerUnits = Units.PIXELS;
