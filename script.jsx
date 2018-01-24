@@ -23,15 +23,6 @@ var RandomImage = function(filename){
         filename="VGhpcyBpcyBhIHJhbmRvbSBpbWFnZS5qcGVn.jpg";
     }
 
-    // this try catch block is needed because
-    // app.documents.getByName raises an error if the document
-    // is not in the list of opened documents
-    try {
-        if (doc = app.documents.getByName(filename)){
-            doc.close(SaveOptions.DONOTSAVECHANGES);
-        }
-    } catch(e) {}
-
     this.port = 80;
 
     // URL to get a random image from
@@ -49,6 +40,16 @@ var RandomImage = function(filename){
 
     this.openImage = function(){
         var socket = new Socket();
+
+        // this try catch block is needed because
+        // app.documents.getByName raises an error if the document
+        // is not in the list of opened documents
+        try {
+            if (doc = app.documents.getByName(filename)){
+                doc.close(SaveOptions.DONOTSAVECHANGES);
+            }
+        } catch(e) {}
+
         // has to be http
         if (socket.open(this.domain+":"+this.port, "binary")) {
             // create temporary file to open
@@ -97,9 +98,12 @@ function countdown(document){
 
 app.preferences.rulerUnits = Units.PIXELS;
 var image = new RandomImage();
-var doc = image.openImage();
-countdown(doc);
 
+do{
+    var doc = image.openImage();
+}while (!confirm("Would you like to draw this image?"))
+
+countdown(doc);
 
 /////////////////////////////////////////////////////////////
 
