@@ -12,12 +12,25 @@
  * Note: Photoshop CS5 was used.
  */
 
-
 /**
  * This class gets a random image from some website and opens it
  * @constructor
  */
-var RandomImage = function(){
+var RandomImage = function(filename){
+    // can't seem to use default params
+    if (!filename) {
+        filename="VGhpcyBpcyBhIHJhbmRvbSBpbWFnZS5qcGVn.jpg";
+    }
+
+    // this try catch block is needed because
+    // app.documents.getByName raises an error if the document
+    // is not in the list of opened documents
+    try {
+        if (doc = app.documents.getByName(filename)){
+            doc.close(SaveOptions.DONOTSAVECHANGES);
+        }
+    } catch(e) {}
+
     this.port = 80;
 
     // URL to get a random image from
@@ -39,7 +52,7 @@ var RandomImage = function(){
         if (socket.open(this.domain+":"+this.port, "binary")) {
             // create temporary file to open
             var scriptDirectory = (new File($.fileName).parent.fsName).replace(/\\/g,'/');
-            var tempFile = File(scriptDirectory+"/VGhpcyBpcyBhIHJhbmRvbSBpbWFnZS5qcGVn.jpg");
+            var tempFile = File(scriptDirectory+"/"+filename);
             tempFile.encoding = "binary";
             tempFile.open("w");
 
